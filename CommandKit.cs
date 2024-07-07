@@ -98,22 +98,36 @@ namespace fr34kyn01535.Kits
 
             if (kit.Money.HasValue && kit.Money.Value != 0)
             {
-                Kits.ExecuteDependencyCode("Uconomy",(IRocketPlugin plugin) =>
+                if (Rocket.Core.Plugins.RocketPlugin.IsDependencyLoaded("Uconomy"))
                 {
-                    Uconomy.Uconomy Uconomy = (Uconomy.Uconomy)plugin;
-                    if ((Uconomy.Database.GetBalance(player.CSteamID.ToString()) + kit.Money.Value) < 0)
+                    Kits.ExecuteDependencyCode("Uconomy", (IRocketPlugin plugin) =>
+                     {
+                         Uconomy.Uconomy Uconomy = (Uconomy.Uconomy)plugin;
+                         if ((Uconomy.Database.GetBalance(player.CSteamID.ToString()) + kit.Money.Value) < 0)
+                         {
+                             cancelBecauseNotEnoughtMoney = true;
+                             UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_no_money", Math.Abs(kit.Money.Value), Uconomy.Configuration.Instance.MoneyName, kit.Name));
+                             return;
+                         }
+                         else
+                         {
+                             UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_money", kit.Money.Value, Uconomy.Configuration.Instance.MoneyName, kit.Name));
+                         }
+                         Uconomy.Database.IncreaseBalance(player.CSteamID.ToString(), kit.Money.Value);
+                     });
+                }
+                else { 
+                    if((player.Experience + kit.Money.Value) < 0)
                     {
                         cancelBecauseNotEnoughtMoney = true;
-                        UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_no_money", Math.Abs(kit.Money.Value), Uconomy.Configuration.Instance.MoneyName, kit.Name));
-                        return;
+                        UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_no_money", Math.Abs(kit.Money.Value), "XP", kit.Name));
                     }
                     else
                     {
-                        UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_money", kit.Money.Value, Uconomy.Configuration.Instance.MoneyName, kit.Name));
+                        UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_money", kit.Money.Value, "XP", kit.Name));
+                        player.Experience += uint.Parse(kit.Money.Value.ToString());
                     }
-                    Uconomy.Database.IncreaseBalance(player.CSteamID.ToString(), kit.Money.Value);
-
-                });
+                }
             }
 
             if (cancelBecauseNotEnoughtMoney)
