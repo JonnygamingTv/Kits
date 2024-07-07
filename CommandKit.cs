@@ -140,8 +140,8 @@ namespace fr34kyn01535.Kits
 
                 try
                 {
-                    Item _item = new Item(item.ItemId, item.Amount, item.Durability);
-                    if (!player.GiveItem(_item))
+                    Item _item = item.Meta.Length>0 ? new Item(item.ItemId, item.Amount, item.Durability, item.Meta) : new Item(item.ItemId, item.Amount, item.Durability);
+                    if (!player.Inventory.tryAddItem(_item, true))
                     {
                         Logger.Log(Kits.Instance.Translations.Instance.Translate("command_kit_failed_giving_item", player.CharacterName, item.ItemId, item.Amount));
                     }
