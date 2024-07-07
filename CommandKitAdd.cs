@@ -57,7 +57,7 @@ namespace fr34kyn01535.Kits
             int kitX = Kits.Instance.Configuration.Instance.Kits.FindIndex(k => k.Name.ToLower() == command[0].ToLower());
             if(kitX!=-1&&(command.Length < 4 || command[3] != "true"))
             {
-                UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kitadd_exists"));
+                UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kitadd_exists", command[0]));
                 return;
             }
             Kit FullKit = new Kit { Name = command[0] };
@@ -94,8 +94,7 @@ Logger.Log(InvItems[i].items.Count.ToString());
                     }
                     catch (Exception e)
                     {
-                        Logger.Log("Problem adding kit to kitItems list:");
-                        Logger.LogError(e.Message);
+                        Logger.LogException(e,"Problem adding kit to kitItems list:");
                     }
                 }
             }

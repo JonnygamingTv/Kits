@@ -137,18 +137,33 @@ namespace fr34kyn01535.Kits
 
             foreach (KitItem item in kit.Items)
             {
-
+                Item _item = item.Meta != null && item.Meta.Length!=0 ? new Item(item.ItemId, item.Amount, item.Durability, item.Meta) : new Item(item.ItemId, item.Amount, item.Durability);
+                if (_item == null)
+                {
+#if DEBUG
+Logger.Log(item.ItemId + " failed to convert to item.");
+#endif
+                    continue;
+                }
                 try
                 {
-                    Item _item = item.Meta.Length>0 ? new Item(item.ItemId, item.Amount, item.Durability, item.Meta) : new Item(item.ItemId, item.Amount, item.Durability);
                     if (!player.Inventory.tryAddItem(_item, true))
                     {
+                        ItemManager.dropItem(_item, player.Position, true, true, true);
                         Logger.Log(Kits.Instance.Translations.Instance.Translate("command_kit_failed_giving_item", player.CharacterName, item.ItemId, item.Amount));
                     }
                 }
                 catch (Exception ex)
                 {
                     Logger.LogException(ex, "Failed giving item "+item.ItemId+" to player");
+                    try
+                    {
+                        if (!player.Player.inventory.tryAddItem(_item, true)) ItemManager.dropItem(_item, player.Position, true, true, true);
+                    }catch(Exception e)
+                    {
+                        Logger.LogException(e, "Failed secondary attempt giving item " + item.ItemId + " to player");
+                        player.GiveItem(item.ItemId,item.Amount);
+                    }
                 }
 
             }
