@@ -26,6 +26,7 @@ namespace fr34kyn01535.Kits
     {
         public Kit() { }
 
+        public byte ResetCooldownWhenDie = false;
         public string Name;
         public uint? XP = null;
         public decimal? Money = null;
@@ -41,10 +42,11 @@ namespace fr34kyn01535.Kits
 
         public KitItem(){ }
 
-        public KitItem(ushort itemId, byte amount)
+        public KitItem(ushort itemId, byte amount, byte durability=100)
         {
             ItemId = itemId;
             Amount = amount;
+            Durability=durability;
         }
 
         [XmlAttribute("id")]
@@ -52,5 +54,8 @@ namespace fr34kyn01535.Kits
 
         [XmlAttribute("amount")]
         public byte Amount;
+
+        [XmlAttribute("durability")]
+        public byte Durability;
     }
 }
