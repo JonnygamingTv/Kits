@@ -61,8 +61,8 @@ namespace fr34kyn01535.Kits
                 return;
             }
             Kit FullKit = new Kit { Name = command[0] };
-            if(int.TryParse(command[1], out int Cd))FullKit.Cooldown = Cd;
-            if(int.TryParse(command[2], out int Cost)) FullKit.Money = -Cost;
+            if(command.Length>1 && int.TryParse(command[1], out int Cd))FullKit.Cooldown = Cd;
+            if(command.Length>2 && int.TryParse(command[2], out int Cost)) FullKit.Money = -Cost;
 
             Items[] InvItems = player.Inventory.items;
             for(int i = 0; i < InvItems.Length; i++)
