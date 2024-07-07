@@ -48,7 +48,7 @@ namespace fr34kyn01535.Kits
         public void Execute(IRocketPlayer caller, string[] command)
         {
             UnturnedPlayer player = (UnturnedPlayer)caller;
-            if (command.Length != 1)
+            if (command.Length < 1)
             {
                 UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_invalid_parameter"));
                 throw new WrongUsageOfCommandException(caller, this);
@@ -63,23 +63,44 @@ namespace fr34kyn01535.Kits
             Kit FullKit = new Kit { Name = command[0] };
             if(command.Length>1 && int.TryParse(command[1], out int Cd))FullKit.Cooldown = Cd;
             if(command.Length>2 && int.TryParse(command[2], out int Cost)) FullKit.Money = -Cost;
-
+            FullKit.Items = new List<KitItem>();
             Items[] InvItems = player.Inventory.items;
-            for(int i = 0; i < InvItems.Length; i++)
+#if DEBUG
+Logger.Log(InvItems.Length.ToString());
+#endif
+            for (int i = 0; i < InvItems.Length; i++)
             {
-                for(int y=0;y< InvItems[i].items.Count; y++)
+#if DEBUG
+Logger.Log(InvItems[i].items.Count.ToString());
+#endif
+                if (InvItems[i] ==null || InvItems[i].items == null) continue;
+                for (int y=0;y< InvItems[i].items.Count; y++)
                 {
-                    ItemJar Ijar = InvItems[i].items[y];
-                    KitItem kitItem = new KitItem(Ijar.item.id, Ijar.item.amount, Ijar.item.durability, Ijar.item.metadata);
-                    FullKit.Items.Add(kitItem);
+                    if (InvItems[i].items[y] == null) continue;
+                    try
+                    {
+                        ItemJar Ijar = InvItems[i].items[y];
+                        KitItem kitItem = new KitItem(Ijar.item.id, Ijar.item.amount, Ijar.item.durability, Ijar.item.metadata);
+                        FullKit.Items.Add(kitItem);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log("Problem adding kit to kitItems list:");
+                        Logger.LogError(e.Message);
+                    }
                 }
             }
+#if DEBUG
+Logger.Log("Kit will now be added..");
+#endif
             if (kitX != -1)
             {
                 Kits.Instance.Configuration.Instance.Kits[kitX] = FullKit;
             }
             else Kits.Instance.Configuration.Instance.Kits.Add(FullKit);
-
+#if DEBUG
+Logger.Log("Kit added to list!");
+#endif
             UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kitadd_success", FullKit.Name));
             Kits.Instance.Configuration.Save();
         }
