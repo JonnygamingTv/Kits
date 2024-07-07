@@ -41,7 +41,7 @@ namespace fr34kyn01535.Kits
         {
             get
             {
-                return new List<string>() { "kits.kitadd" };
+                return new List<string>() { "kits.kitremove" };
             }
         }
 
