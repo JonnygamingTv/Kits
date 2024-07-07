@@ -2,6 +2,7 @@
 using Rocket.Core.Logging;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
+using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,7 +126,8 @@ namespace fr34kyn01535.Kits
 
                 try
                 {
-                    if (!player.GiveItem(item.ItemId, item.Amount))
+                    Item _item = new Item(item.ItemId, item.Amount, item.Durability);
+                    if (!player.GiveItem(_item))
                     {
                         Logger.Log(Kits.Instance.Translations.Instance.Translate("command_kit_failed_giving_item", player.CharacterName, item.ItemId, item.Amount));
                     }
