@@ -43,7 +43,9 @@ namespace fr34kyn01535.Kits
                     {"command_kits","You have access to the following kits: {0}" },
                     {"command_kit_no_money","You can't afford the kit {2}. You need atleast {0} {1}." },
                     {"command_kit_money","You have received {0} {1} from the kit {2}." },
-                    {"command_kit_xp","You have received {0} xp from the kit {1}." }
+                    {"command_kit_xp","You have received {0} xp from the kit {1}." },
+                    {"command_kitadd_success","You just created the kit {0}" },
+                    {"command_kitadd_exists","A kit with the name {0} already exists. If you want to override it: /kitadd [name] [Cooldown] [Cost] [Override? true]" }
                 };
             }
         }

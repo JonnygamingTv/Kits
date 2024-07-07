@@ -48,6 +48,13 @@ namespace fr34kyn01535.Kits
             Amount = amount;
             Durability=durability;
         }
+        public KitItem(ushort itemId, byte amount, byte durability, byte[] meta)
+        {
+            ItemId = itemId;
+            Amount = amount;
+            Durability = durability;
+            Meta = meta;
+        }
 
         [XmlAttribute("id")]
         public ushort ItemId;
@@ -57,5 +64,8 @@ namespace fr34kyn01535.Kits
 
         [XmlAttribute("durability")]
         public byte Durability;
+
+        [XmlAttribute("metadata")]
+        public byte[] Meta;
     }
 }
