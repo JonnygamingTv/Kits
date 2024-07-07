@@ -64,6 +64,15 @@ namespace fr34kyn01535.Kits
             if(command.Length>1 && int.TryParse(command[1], out int Cd))FullKit.Cooldown = Cd;
             if(command.Length>2 && int.TryParse(command[2], out int Cost)) FullKit.Money = -Cost;
             FullKit.Items = new List<KitItem>();
+            PlayerClothing clothes = player.Player.clothing;
+            if (player.Player.clothing.hatAsset != null) { FullKit.Items.Add(new KitItem(player.Player.clothing.hatAsset.id, 0)); }
+            if (player.Player.clothing.glassesAsset != null) { FullKit.Items.Add(new KitItem(player.Player.clothing.glassesAsset.id, 0)); }
+            if (player.Player.clothing.maskAsset != null) { FullKit.Items.Add(new KitItem(player.Player.clothing.maskAsset.id, 0)); }
+            if (player.Player.clothing.backpackAsset != null) { FullKit.Items.Add(new KitItem(player.Player.clothing.backpackAsset.id, 0)); }
+            if (player.Player.clothing.vestAsset != null) { FullKit.Items.Add(new KitItem(player.Player.clothing.vestAsset.id, 0)); }
+            if (player.Player.clothing.shirtAsset != null) { FullKit.Items.Add(new KitItem(player.Player.clothing.shirtAsset.id,0)); }
+            if (player.Player.clothing.pantsAsset != null) { FullKit.Items.Add(new KitItem(player.Player.clothing.pantsAsset.id, 0)); }
+
             Items[] InvItems = player.Inventory.items;
 #if DEBUG
 Logger.Log(InvItems.Length.ToString());
