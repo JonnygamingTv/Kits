@@ -55,10 +55,7 @@ namespace fr34kyn01535.Kits
             }
 
             int kitX = Kits.Instance.Configuration.Instance.Kits.FindIndex(k => k.Name.ToLower() == command[0].ToLower());
-            if (kitX == -1)
-            {
-                kitX = Kits.Instance.Configuration.Instance.Kits.Count;
-            }else if(command.Length < 4 || command[3] != "true")
+            if(kitX!=-1&&(command.Length < 4 || command[3] != "true"))
             {
                 UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kitadd_exists"));
                 return;
@@ -77,7 +74,11 @@ namespace fr34kyn01535.Kits
                     FullKit.Items.Add(kitItem);
                 }
             }
-            Kits.Instance.Configuration.Instance.Kits[kitX] = FullKit;
+            if (kitX != -1)
+            {
+                Kits.Instance.Configuration.Instance.Kits[kitX] = FullKit;
+            }
+            else Kits.Instance.Configuration.Instance.Kits.Add(FullKit);
 
             UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kitadd_success", FullKit.Name));
             Kits.Instance.Configuration.Save();
