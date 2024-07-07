@@ -30,7 +30,7 @@ namespace fr34kyn01535.Kits
         {
             get { return false; }
         }
-        public System.Collections.Generic.List<string> Aliases => new System.Collections.Generic.List<string> { "kitremove","kitdelete","deletekit" };
+        public System.Collections.Generic.List<string> Aliases => new System.Collections.Generic.List<string> { "removekit","kitdelete","deletekit" };
 
         public AllowedCaller AllowedCaller
         {
