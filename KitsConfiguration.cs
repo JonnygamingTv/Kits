@@ -26,7 +26,7 @@ namespace fr34kyn01535.Kits
     {
         public Kit() { }
 
-        public byte ResetCooldownWhenDie = false;
+        public bool ResetCooldownWhenDie = false;
         public string Name;
         public uint? XP = null;
         public decimal? Money = null;
