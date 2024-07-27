@@ -83,7 +83,7 @@ namespace fr34kyn01535.Kits
                 }
             }
 
-            KeyValuePair<string, DateTime> individualCooldown = Kits.InvididualCooldown.Where(k => k.Key == (caller.ToString() + kit.Name)).FirstOrDefault();
+            KeyValuePair<string, DateTime> individualCooldown = Kits.IndividualCooldown.Where(k => k.Key == (caller.ToString() + kit.Name)).FirstOrDefault();
             if (!individualCooldown.Equals(default(KeyValuePair<string, DateTime>)))
             {
                 double individualCooldownSeconds = (DateTime.Now - individualCooldown.Value).TotalSeconds;
@@ -202,11 +202,11 @@ Logger.Log(item.ItemId + " failed to convert to item.");
 
             if (Kits.GlobalCooldown.ContainsKey(caller.ToString()))
             {
-                Kits.InvididualCooldown[caller.ToString() + kit.Name] = DateTime.Now;
+                Kits.IndividualCooldown[caller.ToString() + kit.Name] = DateTime.Now;
             }
             else
             {
-                Kits.InvididualCooldown.Add(caller.ToString() + kit.Name, DateTime.Now);
+                Kits.IndividualCooldown.Add(caller.ToString() + kit.Name, DateTime.Now);
             }
         }
     }

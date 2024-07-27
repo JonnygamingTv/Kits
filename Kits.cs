@@ -5,6 +5,7 @@ using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace fr34kyn01535.Kits
 { 
@@ -13,7 +14,7 @@ namespace fr34kyn01535.Kits
         public static Kits Instance = null;
 
         public static Dictionary<string, DateTime> GlobalCooldown = new Dictionary<string,DateTime>();
-        public static Dictionary<string, DateTime> InvididualCooldown = new Dictionary<string, DateTime>();
+        public static Dictionary<string, DateTime> IndividualCooldown = new Dictionary<string, DateTime>();
 
         protected override void Load()
         {
@@ -25,6 +26,59 @@ namespace fr34kyn01535.Kits
             else
             {
                 Logger.Log("Optional dependency Uconomy is not present.");
+            }
+            try
+            {
+                LoadCooldown();
+            }
+            catch (Exception) { }
+        }
+        protected override void Unload()
+        {
+            SaveCooldown();
+        }
+
+        public void SaveCooldown()
+        {
+            List<string> lines = new List<string>();
+
+            foreach (var kvp in IndividualCooldown)
+            {
+                string line = $"{kvp.Key}|{kvp.Value.ToString("o")}";
+                lines.Add(line);
+            }
+
+            File.WriteAllLines(Path.Combine(Directory, "KitCooldowns.log"), lines);
+        }
+
+        public void LoadCooldown()
+        {
+            string filePath = Path.Combine(Directory, "KitCooldowns.log");
+
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+            string[] lines = File.ReadAllLines(filePath);
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split('|');
+                if (parts.Length == 2)
+                {
+                    string key = parts[0];
+                    if (DateTime.TryParse(parts[1], null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime value))
+                    {
+                        IndividualCooldown[key] = value;
+                    }
+                    else
+                    {
+                        throw new FormatException($"The date format in the file is invalid: {parts[1]}");
+                    }
+                }
+                else
+                {
+                    throw new FormatException($"The line format is invalid: {line}");
+                }
             }
         }
 
