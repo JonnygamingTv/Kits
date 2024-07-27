@@ -155,13 +155,17 @@ Logger.Log(item.ItemId + " failed to convert to item.");
                 }
                 catch (Exception ex)
                 {
+#if DEBUG
                     Logger.LogException(ex, "Failed giving item "+item.ItemId+" to player");
+#endif
                     try
                     {
                         if (!player.Player.inventory.tryAddItem(_item, true)) ItemManager.dropItem(_item, player.Position, true, true, true);
                     }catch(Exception e)
                     {
+#if DEBUG
                         Logger.LogException(e, "Failed secondary attempt giving item " + item.ItemId + " to player");
+#endif
                         player.GiveItem(item.ItemId,item.Amount);
                     }
                 }
