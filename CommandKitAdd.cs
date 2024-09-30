@@ -61,7 +61,11 @@ namespace fr34kyn01535.Kits
                 return;
             }
             Kit FullKit = new Kit { Name = command[0] };
-            if (player.IsInVehicle) FullKit.Vehicle = player.CurrentVehicle.id;
+            if (player.IsInVehicle)
+            {
+                FullKit.Vehicle = player.CurrentVehicle.id;
+                FullKit.VehicleGUID = player.CurrentVehicle.asset?.GUID;
+            }
             if(command.Length>1 && int.TryParse(command[1], out int Cd))FullKit.Cooldown = Cd;
             if(command.Length>2 && int.TryParse(command[2], out int Cost)) FullKit.Money = -Cost;
             FullKit.Items = new List<KitItem>();

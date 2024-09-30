@@ -177,16 +177,22 @@ Logger.Log(item.ItemId + " failed to convert to item.");
                 player.Experience += kit.XP.Value;
                 UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_xp",  kit.XP.Value, kit.Name));
             }
-
-            if (kit.Vehicle.HasValue) {
-                try
+            if (!kit.VehicleGUID.HasValue)
+            {
+                if (kit.Vehicle.HasValue)
                 {
-                    player.GiveVehicle(kit.Vehicle.Value);
+                    try
+                    {
+                        player.GiveVehicle(kit.Vehicle.Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogException(ex, "Failed giving vehicle " + kit.Vehicle.Value + " to player");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logger.LogException(ex, "Failed giving vehicle " + kit.Vehicle.Value + " to player");
-                }
+            }
+            else {
+                VehicleManager.SpawnVehicleV3((VehicleAsset)Assets.FindBaseVehicleAssetByGuidOrLegacyId(kit.VehicleGUID.Value, kit.Vehicle.HasValue ? kit.Vehicle.Value : (ushort)0), 0, 0, 0, player.Position, player.Player.transform.rotation, false, false, false, false, 100, 100, 100, player.CSteamID, player.SteamGroupID, false, new byte[0][], byte.MaxValue);
             }
 
             UnturnedChat.Say(caller, Kits.Instance.Translations.Instance.Translate("command_kit_success", kit.Name));

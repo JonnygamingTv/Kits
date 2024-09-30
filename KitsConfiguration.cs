@@ -25,12 +25,14 @@ namespace fr34kyn01535.Kits
     public class Kit
     {
         public Kit() { }
+        public Kit(bool a, string n = "", uint? x = null, decimal? m = null, ushort? v = null, System.Guid? vg = null) { ResetCooldownWhenDie = a;Name = n;XP = x;Money = m;Vehicle = v;VehicleGUID = vg; }
 
         public bool ResetCooldownWhenDie = false;
         public string Name;
         public uint? XP = null;
         public decimal? Money = null;
         public ushort? Vehicle = null;
+        public System.Guid? VehicleGUID = null;
 
         [XmlArrayItem(ElementName = "Item")]
         public List<KitItem> Items;
